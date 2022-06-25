@@ -29,6 +29,8 @@ ENV HOME="/root" \
     UNISON_UID="0" \
     UNISON_GID="0"
 
+RUN groupmod -g 9000 cdrw
+
 # Copy the bg-sync script into the container.
 COPY sync.sh /usr/local/bin/bg-sync
 RUN chmod +x /usr/local/bin/bg-sync
