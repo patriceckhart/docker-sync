@@ -10,7 +10,7 @@ RUN apk --no-cache add shadow && \
     apk add --no-cache --virtual .build-dependencies build-base curl && \
     apk add --no-cache inotify-tools && \
     apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing/ ocaml && \
-    curl -L https://github.com/bcpierce00/unison/archive/$UNISON_VERSION.tar.gz | tar zxv -C /tmp && \
+    curl -L https://github.com/bcpierce00/unison/archive/refs/tags/v$UNISON_VERSION.tar.gz | tar zxv -C /tmp && \
     cd /tmp/unison-${UNISON_VERSION} && \
     sed -i -e 's/GLIBC_SUPPORT_INOTIFY 0/GLIBC_SUPPORT_INOTIFY 1/' src/fsmonitor/linux/inotify_stubs.c && \
     make UISTYLE=text NATIVE=true STATIC=true && \
