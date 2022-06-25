@@ -1,18 +1,12 @@
 FROM alpine:3.5
 MAINTAINER Patric Eckhart <mail@patriceckhart.com>
 
-# Install needed packages.
-#RUN apt-get -qq update && \
-#    apt-get -qq install inotify-tools rsync unison-all && \
-#    apt-get clean && \
-#    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-
 # Alpine doesn't ship with Bash.
 RUN apk add --no-cache bash
 
 # Install Unison from source with inotify support + remove compilation tools
 ARG UNISON_VERSION=2.48.4
-RUN apk add --no-cache --virtual .build-dependencies build-base curl && \
+RUN apk add --no-cache --virtual .build-dependencies build-base curl shadow && \
     apk add --no-cache inotify-tools && \
     apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing/ ocaml && \
     curl -L https://github.com/bcpierce00/unison/archive/$UNISON_VERSION.tar.gz | tar zxv -C /tmp && \
