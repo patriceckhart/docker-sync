@@ -4,19 +4,9 @@ MAINTAINER Patric Eckhart <mail@patriceckhart.com>
 # Alpine doesn't ship with Bash.
 RUN apk add --no-cache bash
 
-# Install Unison from source with inotify support + remove compilation tools
-ARG UNISON_VERSION=2.51.2
-RUN apk --no-cache add shadow \
- && apk add --no-cache --virtual .build-dependencies build-base curl \
- && apk add --no-cache inotify-tools \
- && apk add --no-cache ocaml \
- && curl -L https://github.com/bcpierce00/unison/archive/v$UNISON_VERSION.tar.gz | tar zxv -C /tmp \
- && cd /tmp/unison-${UNISON_VERSION} \
- && sed -i -e 's/GLIBC_SUPPORT_INOTIFY 0/GLIBC_SUPPORT_INOTIFY 1/' src/fsmonitor/linux/inotify_stubs.c \
- && make UISTYLE=text NATIVE=true STATIC=true \
- && cp src/unison src/unison-fsmonitor /usr/local/bin \
- && apk del .build-dependencies ocaml \
- && rm -rf /tmp/unison-${UNISON_VERSION}
+# Install Unison 
+RUN apk add --no-cache shadow \
+ && apk add unison
 
 ENV HOME="/root" \
     UNISON_USER="root" \
