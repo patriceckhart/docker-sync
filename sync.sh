@@ -18,15 +18,22 @@ log_error_exit() {
   exit 1
 }
 
-# Create non-root user
-if [ "$UNISON_USER" != "root" ]; then
-  log_heading "Setting up non-root user ${UNISON_USER}."
-  HOME="/home/${UNISON_USER}"
-  groupmod -g $UNISON_GID ${UNISON_GROUP}
-  adduser -u $UNISON_UID -D -S -G $UNISON_GROUP $UNISON_USER
-  mkdir -p ${HOME}/.unison
-  chown -R ${UNISON_USER}:${UNISON_GROUP} ${HOME}
+user_exists(){ id "$1" &>/dev/null; }
+
+if user_exists "www-data"; then 
+    echo 'user www-data found'
+else
+  # Create non-root user
+  if [ "$UNISON_USER" != "root" ]; then
+      log_heading "Setting up non-root user ${UNISON_USER}."
+      HOME="/home/${UNISON_USER}"
+      groupmod -g $UNISON_GID ${UNISON_GROUP}
+      adduser -u $UNISON_UID -D -S -G $UNISON_GROUP $UNISON_USER
+      mkdir -p ${HOME}/.unison
+      chown -R ${UNISON_USER}:${UNISON_GROUP} ${HOME}
+  fi
 fi
+
 
 #
 # Set defaults for all variables that we depend on (if they aren't already set in env).
